@@ -53,7 +53,7 @@
         .form-group {
             margin-bottom: 15px;
             display: flex; /* Flexboxを使用 */
-            align-items: center; /* 垂直方向の中央寄せ */
+            align-items: flex-start; /* 上寄せにする */
         }
         label {
             flex: 0 0 150px; /* ラベルの幅を固定 */
@@ -67,10 +67,22 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        .horizontal-group {
-            display: flex;
-            gap: 10px;
+        .choice-container {
+            width: 100%; /* 横幅いっぱいに設定 */
             margin-bottom: 10px;
+        }
+        .choice-item {
+            display: flex; /* Flexboxを使用 */
+            gap: 10px; /* 入力フィールド間のスペース */
+            margin-bottom: 10px; /* 各選択肢の下にマージン */
+        }
+        .choice-item input[type="text"] {
+            flex: 3; /* 選択肢の幅を3に設定 */
+            width: 100%; /* 幅を100%に設定 */
+        }
+        .choice-item input[type="number"] {
+            flex: 1; /* 得点の幅を1に設定 */
+            width: 100%; /* 幅を100%に設定 */
         }
         button {
             padding: 10px 20px;
@@ -83,10 +95,6 @@
         .preview { background-color: #2196F3; color: white; }
         .download { background-color: #FFC107; color: white; }
         .back { background-color: #f44336; color: white; }
-        .choice-container {
-            margin-bottom: 10px;
-            flex: 1;
-        }
         .conditional-group {
             display: none; /* 初期は非表示 */
             margin-top: 15px;
@@ -107,7 +115,7 @@
         <div class="buttons">
             <button type="submit" class="save">保存</button>
             <button type="button" class="preview">プレビュー</button>
-            <button type="button" class="download">ダウンロード</button>
+            <button type="button" class="download" onclick="downloadJson()">ダウンロード</button> <!-- ダウンロードボタン -->
             <button type="button" class="back">一覧に戻る</button>
         </div>
     </div>
@@ -122,15 +130,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label>選択肢:</label>
-                    <div class="choice-container">
-                        <div class="horizontal-group">
+                    <label style="align-self: flex-start;">選択肢:</label>
+                    <div class="choice-container" id="choiceContainer">
+                        <div class="choice-item">
                             <input type="text" placeholder="#1" required>
                             <input type="number" placeholder="例: 30" required>
                         </div>
                     </div>
                 </div>
                 <button type="button" onclick="addChoice(this)">選択肢を追加</button>
+                <button type="button" onclick="removeChoice(this)">選択肢を削除</button> <!-- 削除ボタンを追加 -->
 
                 <div class="form-group">
                     <label>説明文:</label>
@@ -164,11 +173,22 @@
 
 <script>
     function addChoice(button) {
-        const choiceContainer = button.previousElementSibling;
+        const choiceContainer = document.getElementById('choiceContainer');
         const newChoice = document.createElement('div');
-        newChoice.className = 'horizontal-group';
+        newChoice.className = 'choice-item';
         newChoice.innerHTML = '<input type="text" placeholder="選択肢を追加" required> <input type="number" placeholder="得点" required>';
         choiceContainer.appendChild(newChoice);
+    }
+
+    function removeChoice(button) {
+        const choiceContainer = document.getElementById('choiceContainer');
+        const choiceItems = choiceContainer.getElementsByClassName('choice-item');
+
+        if (choiceItems.length > 1) { // 1つ以上残るようにチェック
+            choiceContainer.removeChild(choiceItems[choiceItems.length - 1]);
+        } else {
+            alert("選択肢は必ず1つ以上残してください。");
+        }
     }
 
     function toggleConditional(select) {
@@ -188,15 +208,16 @@
             </div>
 
             <div class="form-group">
-                <label>選択肢:</label>
-                <div class="choice-container">
-                    <div class="horizontal-group">
+                <label style="align-self: flex-start;">選択肢:</label>
+                <div class="choice-container" id="choiceContainer2">
+                    <div class="choice-item">
                         <input type="text" placeholder="#1" required>
                         <input type="number" placeholder="例: 30" required>
                     </div>
                 </div>
             </div>
             <button type="button" onclick="addChoice(this)">選択肢を追加</button>
+            <button type="button" onclick="removeChoice(this)">選択肢を削除</button> <!-- 削除ボタンを追加 -->
 
             <div class="form-group">
                 <label>説明文:</label>
@@ -223,6 +244,41 @@
             </div>
         `;
         document.getElementById('questions').appendChild(questionGroup);
+    }
+
+    function downloadJson() {
+        const questions = [];
+        const questionGroups = document.querySelectorAll('.question-group');
+
+        questionGroups.forEach((group) => {
+            const question = {};
+            question.item = group.querySelector('input[type="text"]').value; // 項目
+            question.choices = [];
+
+            const choiceItems = group.querySelectorAll('.choice-item');
+            choiceItems.forEach((choice) => {
+                const choiceText = choice.querySelector('input[type="text"]').value;
+                const choiceScore = choice.querySelector('input[type="number"]').value;
+                question.choices.push({ text: choiceText, score: choiceScore });
+            });
+
+            question.description = group.querySelector('textarea').value; // 説明文
+            question.url = group.querySelector('input[type="text"]:nth-of-type(2)').value; // URL
+            question.condition = group.querySelector('select').value; // 特定の条件
+
+            questions.push(question);
+        });
+
+        const jsonString = JSON.stringify(questions, null, 2); // JSONに変換
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json'; // ダウンロードファイル名
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 </script>
 
