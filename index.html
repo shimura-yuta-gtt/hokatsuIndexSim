@@ -19,7 +19,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>保育指数シミュレーション設定ツール</title>
+    <title>設定画面</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,21 +27,37 @@
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px; /* 最大幅を1200pxに設定 */
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto; /* 中央寄せ */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between; /* 左右のスペースを均等に */
+            align-items: center; /* 垂直方向の中央寄せ */
+            margin-bottom: 20px;
         }
         h1 {
-            text-align: center;
+            text-align: left; /* タイトルを左寄せ */
+            margin: 0; /* マージンをリセット */
+        }
+        h2 {
+            margin: 20px 0 10px; /* 小見出しのマージン設定 */
+        }
+        .buttons {
+            text-align: right; /* ボタンを右寄せ */
         }
         .form-group {
             margin-bottom: 15px;
+            display: flex; /* Flexboxを使用 */
+            align-items: center; /* 垂直方向の中央寄せ */
         }
         label {
-            display: block;
-            margin-bottom: 5px;
+            flex: 0 0 150px; /* ラベルの幅を固定 */
+            margin-bottom: 0; /* マージンをリセット */
         }
         input[type="text"],
         input[type="number"],
@@ -55,10 +71,6 @@
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
         }
         button {
             padding: 10px 20px;
@@ -90,15 +102,26 @@
 <body>
 
 <div class="container">
-    <h1>設定画面</h1>
+    <div class="header">
+        <h1>設定画面</h1>
+        <div class="buttons">
+            <button type="submit" class="save">保存</button>
+            <button type="button" class="preview">プレビュー</button>
+            <button type="button" class="download">ダウンロード</button>
+            <button type="button" class="back">一覧に戻る</button>
+        </div>
+    </div>
     <form id="mainForm">
         <div id="questions">
             <div class="question-group">
+                <h2>No.1</h2>
+
                 <div class="form-group">
-                    <label>No.1</label>
                     <label>項目:</label>
-                    <input type="text" placeholder="例: まず、基本情報の手続きを行います。" required>
-                    
+                    <input type="text" placeholder="項目を入力" required>
+                </div>
+
+                <div class="form-group">
                     <label>選択肢:</label>
                     <div class="choice-container">
                         <div class="horizontal-group">
@@ -106,8 +129,8 @@
                             <input type="number" placeholder="例: 30" required>
                         </div>
                     </div>
-                    <button type="button" onclick="addChoice(this)">選択肢を追加</button>
                 </div>
+                <button type="button" onclick="addChoice(this)">選択肢を追加</button>
 
                 <div class="form-group">
                     <label>説明文:</label>
@@ -136,13 +159,6 @@
         </div>
 
         <button type="button" onclick="addQuestion()">質問を追加</button>
-
-        <div class="buttons">
-            <button type="submit" class="save">保存</button>
-            <button type="button" class="preview">プレビュー</button>
-            <button type="button" class="download">ダウンロード</button>
-            <button type="button" class="back">一覧に戻る</button>
-        </div>
     </form>
 </div>
 
@@ -164,11 +180,14 @@
         const questionGroup = document.createElement('div');
         questionGroup.className = 'question-group';
         questionGroup.innerHTML = `
-            <div class="form-group">
-                <label>No.2</label>
-                <label>項目:</label>
-                <input type="text" placeholder="例: 次の質問を入力" required>
+            <h2>No.2</h2>
 
+            <div class="form-group">
+                <label>項目:</label>
+                <input type="text" placeholder="項目を入力" required>
+            </div>
+
+            <div class="form-group">
                 <label>選択肢:</label>
                 <div class="choice-container">
                     <div class="horizontal-group">
@@ -176,8 +195,8 @@
                         <input type="number" placeholder="例: 30" required>
                     </div>
                 </div>
-                <button type="button" onclick="addChoice(this)">選択肢を追加</button>
             </div>
+            <button type="button" onclick="addChoice(this)">選択肢を追加</button>
 
             <div class="form-group">
                 <label>説明文:</label>
