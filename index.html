@@ -54,6 +54,7 @@
         .horizontal-group {
             display: flex;
             gap: 10px;
+            margin-bottom: 10px;
         }
         .buttons {
             text-align: center;
@@ -99,9 +100,11 @@
                     <input type="text" placeholder="例: まず、基本情報の手続きを行います。" required>
                     
                     <label>選択肢:</label>
-                    <div class="horizontal-group choice-container">
-                        <input type="text" placeholder="#1" required>
-                        <input type="number" placeholder="例: 30" required>
+                    <div class="choice-container">
+                        <div class="horizontal-group">
+                            <input type="text" placeholder="#1" required>
+                            <input type="number" placeholder="例: 30" required>
+                        </div>
                     </div>
                     <button type="button" onclick="addChoice(this)">選択肢を追加</button>
                 </div>
@@ -145,10 +148,11 @@
 
 <script>
     function addChoice(button) {
-        const choiceContainer = document.createElement('div');
-        choiceContainer.className = 'horizontal-group choice-container';
-        choiceContainer.innerHTML = '<input type="text" placeholder="選択肢を追加" required> <input type="number" placeholder="得点" required>';
-        button.previousElementSibling.appendChild(choiceContainer);
+        const choiceContainer = button.previousElementSibling;
+        const newChoice = document.createElement('div');
+        newChoice.className = 'horizontal-group';
+        newChoice.innerHTML = '<input type="text" placeholder="選択肢を追加" required> <input type="number" placeholder="得点" required>';
+        choiceContainer.appendChild(newChoice);
     }
 
     function toggleConditional(select) {
@@ -166,9 +170,11 @@
                 <input type="text" placeholder="例: 次の質問を入力" required>
 
                 <label>選択肢:</label>
-                <div class="horizontal-group choice-container">
-                    <input type="text" placeholder="#1" required>
-                    <input type="number" placeholder="例: 30" required>
+                <div class="choice-container">
+                    <div class="horizontal-group">
+                        <input type="text" placeholder="#1" required>
+                        <input type="number" placeholder="例: 30" required>
+                    </div>
                 </div>
                 <button type="button" onclick="addChoice(this)">選択肢を追加</button>
             </div>
