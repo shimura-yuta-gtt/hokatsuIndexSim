@@ -131,15 +131,15 @@
 
                 <div class="form-group">
                     <label style="align-self: flex-start;">選択肢:</label>
-                    <div class="choice-container" id="choiceContainer">
+                    <div class="choice-container" id="choiceContainer1">
                         <div class="choice-item">
                             <input type="text" placeholder="#1" required>
                             <input type="number" placeholder="例: 30" required>
                         </div>
                     </div>
                 </div>
-                <button type="button" onclick="addChoice(this)">選択肢を追加</button>
-                <button type="button" onclick="removeChoice(this)">選択肢を削除</button> <!-- 削除ボタンを追加 -->
+                <button type="button" onclick="addChoice(1)">選択肢を追加</button>
+                <button type="button" onclick="removeChoice(1)">選択肢を削除</button> <!-- 削除ボタンを追加 -->
 
                 <div class="form-group">
                     <label>説明文:</label>
@@ -172,16 +172,18 @@
 </div>
 
 <script>
-    function addChoice(button) {
-        const choiceContainer = document.getElementById('choiceContainer');
+    let questionCount = 1; // 質問のカウント
+
+    function addChoice(questionId) {
+        const choiceContainer = document.getElementById(`choiceContainer${questionId}`);
         const newChoice = document.createElement('div');
         newChoice.className = 'choice-item';
         newChoice.innerHTML = '<input type="text" placeholder="選択肢を追加" required> <input type="number" placeholder="得点" required>';
         choiceContainer.appendChild(newChoice);
     }
 
-    function removeChoice(button) {
-        const choiceContainer = document.getElementById('choiceContainer');
+    function removeChoice(questionId) {
+        const choiceContainer = document.getElementById(`choiceContainer${questionId}`);
         const choiceItems = choiceContainer.getElementsByClassName('choice-item');
 
         if (choiceItems.length > 1) { // 1つ以上残るようにチェック
@@ -197,10 +199,11 @@
     }
 
     function addQuestion() {
+        questionCount++; // 質問数をカウントアップ
         const questionGroup = document.createElement('div');
         questionGroup.className = 'question-group';
         questionGroup.innerHTML = `
-            <h2>No.2</h2>
+            <h2>No.${questionCount}</h2> <!-- 番号を動的に設定 -->
 
             <div class="form-group">
                 <label>項目:</label>
@@ -209,15 +212,15 @@
 
             <div class="form-group">
                 <label style="align-self: flex-start;">選択肢:</label>
-                <div class="choice-container" id="choiceContainer2">
+                <div class="choice-container" id="choiceContainer${questionCount}">
                     <div class="choice-item">
                         <input type="text" placeholder="#1" required>
                         <input type="number" placeholder="例: 30" required>
                     </div>
                 </div>
             </div>
-            <button type="button" onclick="addChoice(this)">選択肢を追加</button>
-            <button type="button" onclick="removeChoice(this)">選択肢を削除</button> <!-- 削除ボタンを追加 -->
+            <button type="button" onclick="addChoice(${questionCount})">選択肢を追加</button>
+            <button type="button" onclick="removeChoice(${questionCount})">選択肢を削除</button> <!-- 削除ボタンを追加 -->
 
             <div class="form-group">
                 <label>説明文:</label>
