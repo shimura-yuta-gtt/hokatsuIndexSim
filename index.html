@@ -1,19 +1,3 @@
-<!--
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + 志村くんだよ</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
--->
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -121,20 +105,20 @@
     </div>
     <form id="mainForm">
         <div id="questions">
-            <div class="question-group">
+            <div class="question-group" id="questionGroup1">
                 <h2>No.1</h2>
 
                 <div class="form-group">
-                    <label>項目:</label>
-                    <input type="text" placeholder="項目を入力" required>
+                    <label for="item1">項目:</label>
+                    <input type="text" id="item1" placeholder="項目を入力" required>
                 </div>
 
                 <div class="form-group">
                     <label style="align-self: flex-start;">選択肢:</label>
                     <div class="choice-container" id="choiceContainer1">
                         <div class="choice-item">
-                            <input type="text" placeholder="#1" required>
-                            <input type="number" placeholder="例: 30" required>
+                            <input type="text" id="choice1_1" placeholder="#1" required>
+                            <input type="number" id="score1_1" placeholder="例: 30" required>
                         </div>
                     </div>
                 </div>
@@ -142,18 +126,18 @@
                 <button type="button" onclick="removeChoice(1)">選択肢を削除</button> <!-- 削除ボタンを追加 -->
 
                 <div class="form-group">
-                    <label>説明文:</label>
-                    <textarea rows="4" placeholder="説明文を入力してください"></textarea>
+                    <label for="description1">説明文:</label>
+                    <textarea id="description1" rows="4" placeholder="説明文を入力してください"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>URL:</label>
-                    <input type="text" placeholder="例: http://OO-kuu.pdf" required>
+                    <label for="url1">URL:</label>
+                    <input type="text" id="url1" placeholder="例: http://OO-kuu.pdf" required>
                 </div>
 
                 <div class="form-group">
-                    <label>特定の条件:</label>
-                    <select onchange="toggleConditional(this)">
+                    <label for="condition1">特定の条件:</label>
+                    <select id="condition1" onchange="toggleConditional(this)">
                         <option value="none">選択してください</option>
                         <option value="show">表示する</option>
                         <option value="hide">非表示にする</option>
@@ -161,8 +145,8 @@
                 </div>
 
                 <div class="conditional-group">
-                    <label>条件に基づく質問:</label>
-                    <input type="text" placeholder="条件に基づく質問を入力">
+                    <label for="conditionalQuestion1">条件に基づく質問:</label>
+                    <input type="text" id="conditionalQuestion1" placeholder="条件に基づく質問を入力">
                 </div>
             </div>
         </div>
@@ -176,9 +160,13 @@
 
     function addChoice(questionId) {
         const choiceContainer = document.getElementById(`choiceContainer${questionId}`);
+        const newChoiceIndex = choiceContainer.children.length + 1; // 新しい選択肢のインデックス
         const newChoice = document.createElement('div');
         newChoice.className = 'choice-item';
-        newChoice.innerHTML = '<input type="text" placeholder="選択肢を追加" required> <input type="number" placeholder="得点" required>';
+        newChoice.innerHTML = `
+            <input type="text" id="choice${questionId}_${newChoiceIndex}" placeholder="選択肢を追加" required>
+            <input type="number" id="score${questionId}_${newChoiceIndex}" placeholder="得点" required>
+        `;
         choiceContainer.appendChild(newChoice);
     }
 
@@ -202,20 +190,21 @@
         questionCount++; // 質問数をカウントアップ
         const questionGroup = document.createElement('div');
         questionGroup.className = 'question-group';
+        questionGroup.id = `questionGroup${questionCount}`;
         questionGroup.innerHTML = `
             <h2>No.${questionCount}</h2> <!-- 番号を動的に設定 -->
 
             <div class="form-group">
-                <label>項目:</label>
-                <input type="text" placeholder="項目を入力" required>
+                <label for="item${questionCount}">項目:</label>
+                <input type="text" id="item${questionCount}" placeholder="項目を入力" required>
             </div>
 
             <div class="form-group">
                 <label style="align-self: flex-start;">選択肢:</label>
                 <div class="choice-container" id="choiceContainer${questionCount}">
                     <div class="choice-item">
-                        <input type="text" placeholder="#1" required>
-                        <input type="number" placeholder="例: 30" required>
+                        <input type="text" id="choice${questionCount}_1" placeholder="#1" required>
+                        <input type="number" id="score${questionCount}_1" placeholder="例: 30" required>
                     </div>
                 </div>
             </div>
@@ -223,18 +212,18 @@
             <button type="button" onclick="removeChoice(${questionCount})">選択肢を削除</button> <!-- 削除ボタンを追加 -->
 
             <div class="form-group">
-                <label>説明文:</label>
-                <textarea rows="4" placeholder="説明文を入力してください"></textarea>
+                <label for="description${questionCount}">説明文:</label>
+                <textarea id="description${questionCount}" rows="4" placeholder="説明文を入力してください"></textarea>
             </div>
 
             <div class="form-group">
-                <label>URL:</label>
-                <input type="text" placeholder="例: http://OO-kuu.pdf" required>
+                <label for="url${questionCount}">URL:</label>
+                <input type="text" id="url${questionCount}" placeholder="例: http://OO-kuu.pdf" required>
             </div>
 
             <div class="form-group">
-                <label>特定の条件:</label>
-                <select onchange="toggleConditional(this)">
+                <label for="condition${questionCount}">特定の条件:</label>
+                <select id="condition${questionCount}" onchange="toggleConditional(this)">
                     <option value="none">選択してください</option>
                     <option value="show">表示する</option>
                     <option value="hide">非表示にする</option>
@@ -242,8 +231,8 @@
             </div>
 
             <div class="conditional-group">
-                <label>条件に基づく質問:</label>
-                <input type="text" placeholder="条件に基づく質問を入力">
+                <label for="conditionalQuestion${questionCount}">条件に基づく質問:</label>
+                <input type="text" id="conditionalQuestion${questionCount}" placeholder="条件に基づく質問を入力">
             </div>
         `;
         document.getElementById('questions').appendChild(questionGroup);
@@ -255,19 +244,19 @@
 
         questionGroups.forEach((group) => {
             const question = {};
-            question.item = group.querySelector('input[type="text"]').value; // 項目
+            question.item = group.querySelector('input[id^="item"]').value; // 項目
             question.choices = [];
 
             const choiceItems = group.querySelectorAll('.choice-item');
             choiceItems.forEach((choice) => {
-                const choiceText = choice.querySelector('input[type="text"]').value;
-                const choiceScore = choice.querySelector('input[type="number"]').value;
+                const choiceText = choice.querySelector('input[id^="choice"]').value;
+                const choiceScore = choice.querySelector('input[id^="score"]').value;
                 question.choices.push({ text: choiceText, score: choiceScore });
             });
 
-            question.description = group.querySelector('textarea').value; // 説明文
-            question.url = group.querySelector('input[type="text"]:nth-of-type(2)').value; // URL
-            question.condition = group.querySelector('select').value; // 特定の条件
+            question.description = group.querySelector('textarea[id^="description"]').value; // 説明文
+            question.url = group.querySelector('input[id^="url"]').value; // URL
+            question.condition = group.querySelector('select[id^="condition"]').value; // 特定の条件
 
             questions.push(question);
         });
