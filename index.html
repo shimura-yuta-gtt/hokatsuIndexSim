@@ -57,16 +57,12 @@
         }
         .choice-item {
             display: flex; /* Flexboxを使用 */
+            align-items: center; /* 垂直方向の中央寄せ */
             gap: 10px; /* 入力フィールド間のスペース */
             margin-bottom: 10px; /* 各選択肢の下にマージン */
         }
-        .choice-item input[type="text"] {
-            flex: 3; /* 選択肢の幅を3に設定 */
-            width: 100%; /* 幅を100%に設定 */
-        }
-        .choice-item input[type="number"] {
-            flex: 1; /* 得点の幅を1に設定 */
-            width: 100%; /* 幅を100%に設定 */
+        .choice-item label {
+            flex: 0 0 50px; /* 選択肢ラベルの幅を固定 */
         }
         button {
             padding: 10px 20px;
@@ -117,8 +113,9 @@
                     <label style="align-self: flex-start;">選択肢:</label>
                     <div class="choice-container" id="choiceContainer1">
                         <div class="choice-item">
-                            <input type="text" id="choice1_1" placeholder="#1" required>
-                            <input type="number" id="score1_1" placeholder="例: 30" required>
+                            <label for="choice1_1">#1</label>
+                            <input type="text" id="choice1_1" placeholder="選択肢を追加" required>
+                            <input type="number" id="score1_1" placeholder="得点" required>
                         </div>
                     </div>
                 </div>
@@ -164,6 +161,7 @@
         const newChoice = document.createElement('div');
         newChoice.className = 'choice-item';
         newChoice.innerHTML = `
+            <label for="choice${questionId}_${newChoiceIndex}">#${newChoiceIndex}</label>
             <input type="text" id="choice${questionId}_${newChoiceIndex}" placeholder="選択肢を追加" required>
             <input type="number" id="score${questionId}_${newChoiceIndex}" placeholder="得点" required>
         `;
@@ -203,8 +201,9 @@
                 <label style="align-self: flex-start;">選択肢:</label>
                 <div class="choice-container" id="choiceContainer${questionCount}">
                     <div class="choice-item">
-                        <input type="text" id="choice${questionCount}_1" placeholder="#1" required>
-                        <input type="number" id="score${questionCount}_1" placeholder="例: 30" required>
+                        <label for="choice${questionCount}_1">#1</label>
+                        <input type="text" id="choice${questionCount}_1" placeholder="選択肢を追加" required>
+                        <input type="number" id="score${questionCount}_1" placeholder="得点" required>
                     </div>
                 </div>
             </div>
