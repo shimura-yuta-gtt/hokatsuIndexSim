@@ -239,38 +239,22 @@
     }
 
     function downloadJson() {
-        const questions = [];
-        const questionGroups = document.querySelectorAll('.question-group');
+        const item1 = document.getElementById('item1').value;
+        const choice1_1 = document.getElementById('choice1_1').value;
+        const score1_1 = document.getElementById('score1_1').value;
+        const description1 = document.getElementById('description1').value;
+        const url1 = document.getElementById('url1').value;
+        const data = { item1: item1, choice1_1: choice1_1, score1_1:score1_1, description1:description1, url1:url1 };
+        const json = JSON.stringify(data, null, 2);
 
-        questionGroups.forEach((group) => {
-            const question = {};
-            question.item = group.querySelector('input[id^="item"]').value; // 項目
-            question.choices = [];
-
-            const choiceItems = group.querySelectorAll('.choice-item');
-            choiceItems.forEach((choice) => {
-                const choiceText = choice.querySelector('input[id^="choice"]').value;
-                const choiceScore = choice.querySelector('input[id^="score"]').value;
-                question.choices.push({ text: choiceText, score: choiceScore });
-            });
-
-            question.description = group.querySelector('textarea[id^="description"]').value; // 説明文
-            question.url = group.querySelector('input[id^="url"]').value; // URL
-            question.condition = group.querySelector('select[id^="condition"]').value; // 特定の条件
-
-            questions.push(question);
-        });
-
-        const jsonString = JSON.stringify(questions, null, 2); // JSONに変換
-        const blob = new Blob([jsonString], { type: 'application/json' });
+        const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'data.json'; // ダウンロードファイル名
+        a.download = 'data.json';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url);
     }
 </script>
 
