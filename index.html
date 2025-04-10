@@ -238,14 +238,45 @@
     }
 
     function downloadJson() {
-        const item1 = document.getElementById('item1').value;
-        const choice1_1 = document.getElementById('choice1_1').value;
-        const score1_1 = document.getElementById('score1_1').value;
-        const description1 = document.getElementById('description1').value;
-        const url1 = document.getElementById('url1').value;
-        const data = { item1: item1, choice1_1: choice1_1, score1_1:score1_1, description1:description1, url1:url1 };
-        const json = JSON.stringify(data, null, 2);
+        const data ={};
+        let questionIndex = 1;
 
+        while(true){
+            const item = document.getElementById(`item${questionIndex}`)
+            if(!item) break;//要素がない場合、ループを終了
+
+            let choices = [];
+            let choicesIndex = 1;
+            while(true){
+                const choice = document.getElementById(`choice${questionIndex}_${choicesIndex}`)?.value || '';
+                if(!choice) break;//要素がない場合、ループを終了
+
+                const score = document.getElementById(`score${questionIndex}_${choicesIndex}`)?.value || '';
+
+                choices.push(
+                    {
+                        "optionId":choicesIndex,
+                        "text":choice,
+                        "score":score
+                    }
+                );
+                choicesIndex++;
+            }
+            const description = document.getElementById(`description${index}`)?.value || '';
+            const url = document.getElementById(`url${index}`)?.value || '';
+
+            data[`item${index}`] = {
+                id: questionIndex,
+                text: item,
+                options: choices,
+                description: description,
+                url: url
+            };
+
+            questionIndex++;
+        }
+        
+        const json = JSON.stringify(data, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
