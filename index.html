@@ -238,13 +238,13 @@
     }
 
     function downloadJson() {
-        const data ={text:'aaa'};
+        const data ={};
         let questionIndex = 1;
-/*
+
         while(true){
             const item = document.getElementById(`item${questionIndex}`)
             if(!item) break;//要素がない場合、ループを終了
-
+/*
             let choices = [];
             let choicesIndex = 1;
             while(true){
@@ -262,20 +262,21 @@
                 );
                 choicesIndex++;
             }
+                */
             const description = document.getElementById(`description${index}`)?.value || '';
             const url = document.getElementById(`url${index}`)?.value || '';
 
             data[`item${index}`] = {
                 id: questionIndex,
                 text: item,
-                options: choices,
+                //options: choices,
                 description: description,
                 url: url
             };
 
             questionIndex++;
         }
-        */
+
         const json = JSON.stringify(data, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
