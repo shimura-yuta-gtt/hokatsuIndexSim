@@ -238,7 +238,7 @@
     }
 
     function downloadJson() {
-        const data ={};
+        const data =[];
         let questionIndex = 1;
 
         while(true){
@@ -248,7 +248,7 @@
             let choices = [];
             let choicesIndex = 1;
             while(true){
-                const choice = document.getElementById(`choice${questionIndex}_${choicesIndex}`)?.value || '';
+                const choice = document.getElementById(`choice${questionIndex}_${choicesIndex}`);
                 if(!choice) break;//要素がない場合、ループを終了
 
                 const score = document.getElementById(`score${questionIndex}_${choicesIndex}`)?.value || '';
@@ -256,23 +256,28 @@
                 choices.push(
                     {
                         "optionId":choicesIndex,
-                        "text":choice,
-                        "score":score
+                        "text":choice?.value || '',
+                        "score":score,
+                        "scoreCondition": null
                     }
                 );
                 choicesIndex++;
             }
 
-            const description = document.getElementById(`description${questionIndex}`)?.value || '';
-            const url = document.getElementById(`url${questionIndex}`)?.value || '';
+            const description = document.getElementById(`description${questionIndex}`)?.value || null;
+            const url = document.getElementById(`url${questionIndex}`)?.value || null;
 
-            data[`item${questionIndex}`] = {
-                id: questionIndex,
-                text: item.value,
-                options: choices,
-                description: description,
-                url: url
-            };
+            data.push(
+                {
+                    id: questionIndex,
+                    sender: 'bot',
+                    text: item?.value || '',
+                    options: choices,
+                    description: description,
+                    url: url,
+                    displayCondition: null
+                }
+            );
 
             questionIndex++;
         }
