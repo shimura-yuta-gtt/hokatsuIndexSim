@@ -238,9 +238,9 @@
     }
 
     function downloadJson() {
-        const data ={};
+        const data ={text:'aaa'};
         let questionIndex = 1;
-
+/*
         while(true){
             const item = document.getElementById(`item${questionIndex}`)
             if(!item) break;//要素がない場合、ループを終了
@@ -275,7 +275,7 @@
 
             questionIndex++;
         }
-        
+        */
         const json = JSON.stringify(data, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
