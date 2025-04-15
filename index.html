@@ -34,6 +34,20 @@
             margin: 0;
             margin-bottom: 20px;
             font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: darkred;
         }
         .buttons {
             display: flex;
@@ -90,17 +104,6 @@
         .choice-item input[type="number"] {
             flex: 1;
             width: 100%;
-        }
-        .delete-button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .delete-button:hover {
-            background-color: darkred;
         }
         .choice-buttons {
             display: flex;
@@ -167,7 +170,9 @@
     <form id="mainForm">
         <div id="questions">
             <div class="question-group" id="questionGroup1">
-                <h2>No.1</h2>
+                <h2>No.1
+                    <button type="button" class="delete-button" onclick="removeQuestion(1)">削除</button>
+                </h2>
 
                 <div class="form-group">
                     <label class="main-label" for="item1">質問:</label>
@@ -189,7 +194,7 @@
                             </div>
                         </div>
                         <div class="choice-buttons">
-                            <button type="button" class="add-button" onclick="addChoice(1)">+</button> <!-- 正方形ボタン -->
+                            <button type="button" class="add-button" onclick="addChoice(1)">+</button>
                         </div>
                     </div>
                 </div>
@@ -223,7 +228,6 @@
         </div>
         <div class="choice-buttons" style="justify-content: flex-start;">
             <button type="button" class="add-remove" onclick="addQuestion()">質問を追加</button>
-            <button type="button" class="add-remove" onclick="removeQuestion()">質問を削除</button> 
         </div>
     </form>
 </div>
@@ -275,7 +279,9 @@
         questionGroup.className = 'question-group';
         questionGroup.id = `questionGroup${questionCount}`;
         questionGroup.innerHTML = `
-            <h2>No.${questionCount}</h2>
+            <h2>No.${questionCount}
+                <button type="button" class="delete-button" onclick="removeQuestion(${questionCount})">削除</button>
+            </h2>
             <div class="form-group">
                 <label class="main-label" for="item${questionCount}">質問:</label>
                 <input type="text" id="item${questionCount}" required>
@@ -327,15 +333,37 @@
         updateAllQuestionOptions(); // すべての質問のオプションを更新
     }
 
-    function removeQuestion() {
-        if (questionCount > 1) {
-            const questionGroup = document.getElementById(`questionGroup${questionCount}`);
-            questionGroup.parentNode.removeChild(questionGroup);
-            questionCount--;
-            updateAllQuestionOptions(); // 質問が削除された後にオプションを更新
+    function removeQuestion(questionId) {
+        if (questionCount > 1) { // 1つ以上の質問が残る場合のみ削除
+            const questionGroup = document.getElementById(`questionGroup${questionId}`);
+            if (questionGroup) {
+                questionGroup.parentNode.removeChild(questionGroup);
+                questionCount--;
+                renumberQuestions(); // 質問を振り直す
+                updateAllQuestionOptions(); // 質問が削除された後にオプションを更新
+            } else {
+                alert("削除対象の質問が見つかりません。");
+            }
         } else {
-            alert("減らしすぎ！");
+            alert("少なくとも1つの質問は残してください。");
         }
+    }
+
+    function renumberQuestions() {
+        const questions = document.querySelectorAll('.question-group');
+        questions.forEach((questionGroup, index) => {
+            const questionId = index + 1;
+            questionGroup.id = `questionGroup${questionId}`;
+            questionGroup.querySelector('h2').innerHTML = `No.${questionId} <button type="button" class="delete-button" onclick="removeQuestion(${questionId})">削除</button>`;
+            const inputs = questionGroup.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                const name = input.getAttribute('id');
+                if (name) {
+                    const newId = name.replace(/\d+$/, questionId);
+                    input.setAttribute('id', newId);
+                }
+            });
+        });
     }
 
     function updateQuestionOptions(currentQuestionId) {
