@@ -106,6 +106,7 @@
             display: flex;
             justify-content: center; /* 中央揃え */
             margin-top: 10px; /* 上部マージン */
+            gap: 10px;
         }
         .add-button {
             width: 30px; /* 幅を30pxに設定 */
@@ -265,17 +266,6 @@
             }
         } else {
             alert("選択肢は1つ以上残してください。");
-        }
-    }
-
-    function removeChoice(questionId) {
-        const choiceContainer = document.getElementById(`choiceContainer${questionId}`);
-        const choiceItems = choiceContainer.getElementsByClassName('choice-item');
-
-        if (choiceItems.length > 1) {
-            choiceContainer.removeChild(choiceItems[choiceItems.length - 1]);
-        } else {
-            alert("減らしすぎ！");
         }
     }
 
