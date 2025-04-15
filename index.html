@@ -372,9 +372,10 @@
 
         for (let i = 1; i <= questionCount; i++) {
             if (i !== currentQuestionId) {
+                const itemText = document.getElementById(`item${i}`).value || '未入力';
                 const option = document.createElement('option');
                 option.value = i;
-                option.textContent = `No.${i}`;
+                option.textContent = `No.${i}: ${itemText}`;
                 questionSelect.appendChild(option);
             }
         }
@@ -389,15 +390,14 @@
         const choiceContainer = document.getElementById(`choiceContainer${selectedQuestion}`);
 
         if (choiceContainer) {
-            const choices = choiceContainer.getElementsByTagName('input');
+            const choices = choiceContainer.getElementsByClassName('choice-item');
             for (let i = 0; i < choices.length; i++) {
-                const choiceText = choices[i].value;
-                if (choiceText) {
-                    const option = document.createElement('option');
-                    option.value = choiceText;
-                    option.textContent = choiceText;
-                    choiceSelect.appendChild(option);
-                }
+                const choiceText = choices[i].getElementsByTagName('input')[0].value;
+                const displayText = choiceText ? `#${i + 1}: ${choiceText}` : `#${i + 1}: 未入力`; // 未入力の場合の表示
+                const option = document.createElement('option');
+                option.value = choiceText;
+                option.textContent = displayText; // インデックスと値を表示
+                choiceSelect.appendChild(option);
             }
         }
     }
