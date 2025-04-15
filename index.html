@@ -26,28 +26,28 @@
             margin-bottom: 20px;
         }
         h1 {
-            text-align: left; /* タイトルを左寄せ */
+            text-align: left;
             font-size: 24px;
-            margin: 0; /* マージンをリセット */
+            margin: 0;
         }
         h2 {
-            margin: 0; /* 小見出しのマージン設定 */
+            margin: 0;
             margin-bottom: 20px;
             font-size: 20px;
         }
         .buttons {
             display: flex;
-            text-align: right; /* ボタンを右寄せ */
-            gap:10px;
+            text-align: right;
+            gap: 10px;
         }
         .form-group {
             margin-bottom: 20px;
-            display: flex; /* Flexboxを使用 */
+            display: flex;
         }
         label {
             display: flex;
             align-items: center;
-            flex: 0 0 80px; /* ラベルの幅を固定 */
+            flex: 0 0 80px;
             font-size: 15px;
         }
         input[type="text"],
@@ -58,44 +58,70 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        .choices{
+        .choices {
             display: flex;
-            width: 100%; /* 横幅いっぱいに設定 */
+            width: 100%;
         }
-        .choices-group{
+        .choices-group {
             display: flex;
             flex-flow: column;
-            width: 100%; /* 横幅いっぱいに設定 */
-            gap:10px
+            width: 100%;
+            gap: 10px;
         }
         .choice-container {
             display: flex;
             flex-flow: column;
-            width: 100%; /* 横幅いっぱいに設定 */
-            gap:10px
+            width: 100%;
+            gap: 10px;
         }
         .choice-item {
-            display: flex; /* Flexboxを使用 */
-            align-items: center; /* 垂直方向の中央寄せ */
-            gap: 10px; /* 入力フィールド間のスペース */
-
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .choice-item label {
-            flex: 0.5; /* 選択肢ラベルの幅を固定 */
-            width: 100%; /* 幅を100%に設定 */
+            flex: 0.5;
+            width: 100%;
         }
         .choice-item input[type="text"] {
-            flex: 8; /* 選択肢入力の幅を9に設定 */
-            width: 100%; /* 幅を100%に設定 */
+            flex: 8;
+            width: 100%;
         }
         .choice-item input[type="number"] {
-            flex: 1; /* 得点入力の幅を1に設定 */
-            width: 100%; /* 幅を100%に設定 */
+            flex: 1;
+            width: 100%;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: darkred;
         }
         .choice-buttons {
             display: flex;
-            justify-content: flex-end;
-            gap:15px;
+            justify-content: center; /* 中央揃え */
+            margin-top: 10px; /* 上部マージン */
+        }
+        .add-button {
+            width: 30px; /* 幅を30pxに設定 */
+            height: 30px; /* 高さを30pxに設定 */
+            background-color: #4CAF50; /* ボタンの色 */
+            color: white; /* 文字色 */
+            border: none; /* ボーダーなし */
+            border-radius: 5px; /* 角を丸める */
+            font-size: 16px; /* フォントサイズ */
+            cursor: pointer; /* カーソルをポインターに */
+            display: flex; /* Flexboxを使用 */
+            justify-content: center; /* 中央揃え */
+            align-items: center; /* 垂直方向中央揃え */
+        }
+        .add-button:hover {
+            background-color: #45a049; /* ホバー時の色 */
         }
         button {
             padding: 5px 10px;
@@ -105,20 +131,16 @@
             cursor: pointer;
         }
         button:disabled {
-            background-color: gray; 
-            color: white; 
+            background-color: gray;
+            color: white;
             cursor: not-allowed;
-        }
-        .add-remove{
-            padding: auto;
-            font-size: 15px;
         }
         .save { background-color: #4CAF50; color: white; }
         .preview { background-color: #4CAF50; color: white; }
         .download { background-color: #4CAF50; color: white; }
         .back { background-color: #4CAF50; color: white; }
         .conditional-group {
-            display: none; /* 初期は非表示 */
+            display: none;
             margin-top: 15px;
         }
         .question-group {
@@ -153,33 +175,48 @@
 
                 <div class="form-group">
                     <div class="choices-group">
-                        <div class ="choices">
+                        <div class="choices">
                             <label>選択肢:</label>
                             <div class="choice-container" id="choiceContainer1">
                                 <div class="choice-item">
                                     <label for="choice1_1">#1</label>
                                     <input type="text" id="choice1_1" required>
-                                    <label for="choice1_1">得点</label>
+                                    <label for="score1_1">得点</label>
                                     <input type="number" id="score1_1" required>
+                                    <button type="button" class="delete-button" onclick="removeSpecificChoice(this)">削除</button>
                                 </div>
                             </div>
                         </div>
                         <div class="choice-buttons">
-                            <button type="button" class="add-remove" onclick="addChoice(1)">追加</button>
-                            <button type="button" class="add-remove" onclick="removeChoice(1)">削除</button>
+                            <button type="button" class="add-button" onclick="addChoice(1)">+</button> <!-- 正方形ボタン -->
                         </div>
                     </div>
                 </div>
-
 
                 <div class="form-group">
                     <label for="description1">説明:</label>
                     <textarea id="description1" rows="4"></textarea>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 0;">
+                <div class="form-group">
                     <label for="url1">URL:</label>
                     <input type="text" id="url1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="questionSelect1">表示条件:</label>
+                    <select id="questionSelect1" onchange="updateChoiceOptions(1)">
+                        <option value="">選択してください</option>
+                    </select>
+
+                    <select id="conditionType1">
+                        <option value="include">含む</option>
+                        <option value="exclude">含まない</option>
+                    </select>
+
+                    <select id="choiceSelect1">
+                        <option value="">選択肢を選択</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -191,27 +228,51 @@
 </div>
 
 <script>
-    let questionCount = 1; // 質問のカウント
+    let questionCount = 1;
 
     function addChoice(questionId) {
         const choiceContainer = document.getElementById(`choiceContainer${questionId}`);
-        const newChoiceIndex = choiceContainer.children.length + 1; // 新しい選択肢のインデックス
+        const newChoiceIndex = choiceContainer.children.length + 1;
         const newChoice = document.createElement('div');
         newChoice.className = 'choice-item';
         newChoice.innerHTML = `
             <label for="choice${questionId}_${newChoiceIndex}">#${newChoiceIndex}</label>
             <input type="text" id="choice${questionId}_${newChoiceIndex}" required>
-            <label for="choice1_1">得点</label>
+            <label for="score${questionId}_${newChoiceIndex}">得点</label>
             <input type="number" id="score${questionId}_${newChoiceIndex}" required>
+            <button type="button" class="delete-button" onclick="removeSpecificChoice(this)">削除</button>
         `;
         choiceContainer.appendChild(newChoice);
+    }
+
+    function removeSpecificChoice(button) {
+        const choiceItem = button.parentElement;
+        const choiceContainer = choiceItem.parentElement;
+
+        // 現在の選択肢の数を確認
+        if (choiceContainer.children.length > 1) {
+            // 削除する選択肢を削除
+            choiceContainer.removeChild(choiceItem);
+
+            // インデックスを振り直す
+            const choiceItems = choiceContainer.getElementsByClassName('choice-item');
+            for (let i = 0; i < choiceItems.length; i++) {
+                const choiceLabel = choiceItems[i].getElementsByTagName('label')[0];
+                choiceLabel.textContent = `#${i + 1}`; // インデックスを更新
+                choiceLabel.setAttribute('for', `choice${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
+                choiceItems[i].getElementsByTagName('input')[0].setAttribute('id', `choice${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
+                choiceItems[i].getElementsByTagName('input')[1].setAttribute('id', `score${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
+            }
+        } else {
+            alert("選択肢は1つ以上残してください。");
+        }
     }
 
     function removeChoice(questionId) {
         const choiceContainer = document.getElementById(`choiceContainer${questionId}`);
         const choiceItems = choiceContainer.getElementsByClassName('choice-item');
 
-        if (choiceItems.length > 1) { // 1つ以上残るようにチェック
+        if (choiceItems.length > 1) {
             choiceContainer.removeChild(choiceItems[choiceItems.length - 1]);
         } else {
             alert("減らしすぎ！");
@@ -219,102 +280,160 @@
     }
 
     function addQuestion() {
-        questionCount++; // 質問数をカウントアップ
+        questionCount++;
         const questionGroup = document.createElement('div');
         questionGroup.className = 'question-group';
         questionGroup.id = `questionGroup${questionCount}`;
         questionGroup.innerHTML = `
-            <h2>No.${questionCount}</h2> <!-- 番号を動的に設定 -->
-
+            <h2>No.${questionCount}</h2>
             <div class="form-group">
                 <label class="main-label" for="item${questionCount}">質問:</label>
                 <input type="text" id="item${questionCount}" required>
             </div>
-
             <div class="form-group">
                 <div class="choices-group">
-                    <div class ="choices">
+                    <div class="choices">
                         <label>選択肢:</label>
                         <div class="choice-container" id="choiceContainer${questionCount}">
                             <div class="choice-item">
                                 <label for="choice${questionCount}_1">#1</label>
                                 <input type="text" id="choice${questionCount}_1" required>
-                                <label for="choice1_1">得点</label>
+                                <label for="score${questionCount}_1">得点</label>
                                 <input type="number" id="score${questionCount}_1" required>
+                                <button type="button" class="delete-button" onclick="removeSpecificChoice(this)">削除</button>
                             </div>
                         </div>
                     </div>
                     <div class="choice-buttons">
-                        <button type="button" class="add-remove" onclick="addChoice(${questionCount})">追加</button>
-                        <button type="button" class="add-remove" onclick="removeChoice(${questionCount})">削除</button>
+                        <button type="button" class="add-button" onclick="addChoice(${questionCount})">+</button>
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="description${questionCount}">説明:</label>
-                <textarea id="description${questionCount}" rows="4" ></textarea>
+                <textarea id="description${questionCount}" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="url${questionCount}">URL:</label>
                 <input type="text" id="url${questionCount}" required>
             </div>
+            <div class="form-group">
+                <label for="questionSelect${questionCount}">表示条件:</label>
+                <select id="questionSelect${questionCount}" onchange="updateChoiceOptions(${questionCount})">
+                    <option value="">選択してください</option>
+                </select>
+
+                <select id="conditionType${questionCount}">
+                    <option value="include">含む</option>
+                    <option value="exclude">含まない</option>
+                </select>
+
+                <select id="choiceSelect${questionCount}">
+                    <option value="">選択肢を選択</option>
+                </select>
+            </div>
         `;
         document.getElementById('questions').appendChild(questionGroup);
+        updateAllQuestionOptions(); // すべての質問のオプションを更新
     }
 
     function removeQuestion() {
         if (questionCount > 1) {
             const questionGroup = document.getElementById(`questionGroup${questionCount}`);
             questionGroup.parentNode.removeChild(questionGroup);
-            questionCount--; // 質問数をデクリメント
+            questionCount--;
+            updateAllQuestionOptions(); // 質問が削除された後にオプションを更新
         } else {
             alert("減らしすぎ！");
         }
     }
 
+    function updateQuestionOptions(currentQuestionId) {
+        const questionSelect = document.getElementById(`questionSelect${currentQuestionId}`);
+        questionSelect.innerHTML = '<option value="">選択してください</option>';
+
+        for (let i = 1; i <= questionCount; i++) {
+            if (i !== currentQuestionId) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `No.${i}`;
+                questionSelect.appendChild(option);
+            }
+        }
+        updateChoiceOptions(currentQuestionId); // 選択肢も更新
+    }
+
+    function updateChoiceOptions(questionId) {
+        const choiceSelect = document.getElementById(`choiceSelect${questionId}`);
+        choiceSelect.innerHTML = '<option value="">選択肢を選択</option>';
+
+        const selectedQuestion = document.getElementById(`questionSelect${questionId}`).value;
+        const choiceContainer = document.getElementById(`choiceContainer${selectedQuestion}`);
+
+        if (choiceContainer) {
+            const choices = choiceContainer.getElementsByTagName('input');
+            for (let i = 0; i < choices.length; i++) {
+                const choiceText = choices[i].value;
+                if (choiceText) {
+                    const option = document.createElement('option');
+                    option.value = choiceText;
+                    option.textContent = choiceText;
+                    choiceSelect.appendChild(option);
+                }
+            }
+        }
+    }
+
+    function updateAllQuestionOptions() {
+        for (let i = 1; i <= questionCount; i++) {
+            updateQuestionOptions(i);
+        }
+    }
+
     function downloadJson() {
-        const data =[];
+        const data = [];
         let questionIndex = 1;
 
-        while(true){
+        while (true) {
             const item = document.getElementById(`item${questionIndex}`);
-            if(!item) break;//要素がない場合、ループを終了
+            if (!item) break;
 
             let choices = [];
             let choicesIndex = 1;
-            while(true){
+            while (true) {
                 const choice = document.getElementById(`choice${questionIndex}_${choicesIndex}`);
-                if(!choice) break;//要素がない場合、ループを終了
+                if (!choice) break;
 
                 const score = document.getElementById(`score${questionIndex}_${choicesIndex}`)?.value || '';
 
-                choices.push(
-                    {
-                        "optionId":choicesIndex, 
-                        "text":choice?.value || '', 
-                        "score":score, 
-                        "scoreCondition": null
-                    }
-                );
+                choices.push({
+                    "optionId": choicesIndex, 
+                    "text": choice?.value || '', 
+                    "score": score, 
+                    "scoreCondition": null
+                });
                 choicesIndex++;
             }
 
             const description = document.getElementById(`description${questionIndex}`)?.value || null;
             const url = document.getElementById(`url${questionIndex}`)?.value || null;
+            const conditionQuestion = document.getElementById(`questionSelect${questionIndex}`)?.value || null;
+            const conditionType = document.getElementById(`conditionType${questionIndex}`)?.value || null;
+            const conditionChoice = document.getElementById(`choiceSelect${questionIndex}`)?.value || null;
 
-            data.push(
-                {
-                    id: questionIndex,
-                    sender: 'bot',
-                    text: item?.value || '',
-                    options: choices,
-                    description: description,
-                    url: url,
-                    displayCondition: null
+            data.push({
+                id: questionIndex,
+                sender: 'bot',
+                text: item?.value || '',
+                options: choices,
+                description: description,
+                url: url,
+                displayCondition: {
+                    question: conditionQuestion,
+                    type: conditionType,
+                    choice: conditionChoice
                 }
-            );
+            });
 
             questionIndex++;
         }
