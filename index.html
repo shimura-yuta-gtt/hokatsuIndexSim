@@ -248,7 +248,6 @@
             <button type="button" class="delete-button" onclick="removeSpecificChoice(this)">削除</button>
         `;
         choiceContainer.appendChild(newChoice);
-        updateChoiceOptions(questionId); // 選択肢を追加した後に更新
     }
 
     function removeSpecificChoice(button) {
@@ -259,22 +258,18 @@
         if (choiceContainer.children.length > 1) {
             // 削除する選択肢を削除
             choiceContainer.removeChild(choiceItem);
+
             // インデックスを振り直す
-            renumberChoices(choiceContainer);
+            const choiceItems = choiceContainer.getElementsByClassName('choice-item');
+            for (let i = 0; i < choiceItems.length; i++) {
+                const choiceLabel = choiceItems[i].getElementsByTagName('label')[0];
+                choiceLabel.textContent = `#${i + 1}`; // インデックスを更新
+                choiceLabel.setAttribute('for', `choice${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
+                choiceItems[i].getElementsByTagName('input')[0].setAttribute('id', `choice${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
+                choiceItems[i].getElementsByTagName('input')[1].setAttribute('id', `score${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
+            }
         } else {
             alert("選択肢は1つ以上残してください。");
-        }
-        updateChoiceOptions(choiceContainer.id.replace('choiceContainer', '')); // 更新
-    }
-
-    function renumberChoices(choiceContainer) {
-        const choiceItems = choiceContainer.getElementsByClassName('choice-item');
-        for (let i = 0; i < choiceItems.length; i++) {
-            const choiceLabel = choiceItems[i].getElementsByTagName('label')[0];
-            choiceLabel.textContent = `#${i + 1}`; // インデックスを更新
-            choiceLabel.setAttribute('for', `choice${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
-            choiceItems[i].getElementsByTagName('input')[0].setAttribute('id', `choice${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
-            choiceItems[i].getElementsByTagName('input')[1].setAttribute('id', `score${choiceContainer.id.replace('choiceContainer', '')}_${i + 1}`);
         }
     }
 
@@ -289,7 +284,7 @@
             </h2>
             <div class="form-group">
                 <label class="main-label" for="item${questionCount}">質問:</label>
-                <input type="text" id="item${questionCount}" required oninput="updateAllQuestionOptions()">
+                <input type="text" id="item${questionCount}" required>
             </div>
             <div class="form-group">
                 <div class="choices-group">
@@ -298,9 +293,9 @@
                         <div class="choice-container" id="choiceContainer${questionCount}">
                             <div class="choice-item">
                                 <label for="choice${questionCount}_1">#1</label>
-                                <input type="text" id="choice${questionCount}_1" required oninput="updateChoiceOptions(${questionCount})">
+                                <input type="text" id="choice${questionCount}_1" required>
                                 <label for="score${questionCount}_1">得点</label>
-                                <input type="number" id="score${questionCount}_1" required oninput="updateChoiceOptions(${questionCount})">
+                                <input type="number" id="score${questionCount}_1" required>
                                 <button type="button" class="delete-button" onclick="removeSpecificChoice(this)">削除</button>
                             </div>
                         </div>
@@ -312,11 +307,11 @@
             </div>
             <div class="form-group">
                 <label for="description${questionCount}">説明:</label>
-                <textarea id="description${questionCount}" rows="4" oninput="updateAllQuestionOptions()"></textarea>
+                <textarea id="description${questionCount}" rows="4"></textarea>
             </div>
             <div class="form-group">
                 <label for="url${questionCount}">URL:</label>
-                <input type="text" id="url${questionCount}" required oninput="updateAllQuestionOptions()">
+                <input type="text" id="url${questionCount}" required>
             </div>
             <div class="form-group">
                 <label for="questionSelect${questionCount}">表示条件:</label>
@@ -398,7 +393,7 @@
             const choices = choiceContainer.getElementsByClassName('choice-item');
             for (let i = 0; i < choices.length; i++) {
                 const choiceText = choices[i].getElementsByTagName('input')[0].value;
-                const displayText = choiceText ? `#${i + 1}: ${choiceText}` : `#${i + 1}: 未入力`;
+                const displayText = choiceText ? `#${i + 1}: ${choiceText}` : `#${i + 1}: 未入力`; // 未入力の場合の表示
                 const option = document.createElement('option');
                 option.value = choiceText;
                 option.textContent = displayText; // インデックスと値を表示
